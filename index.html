@@ -3,9 +3,21 @@
 <head>
   <title>Style Transfer</title>
   <meta charset="utf-8"/>
-  <script src = "scripts/tf.min.js"/>
-  <link rel="stylesheet" type="text/css" href="styles/all.css">
+  <script src = "scripts/tf.min.js"></script>
+  <script src = "scripts/transfer.js"></script>
+  <link rel="stylesheet" type="text/css" href="styles/style.css">
 </head>
+
 <body>
+  <form id="urlForm">
+    <h1>Style Transfer</h1>
+    <input type="text" placeholder="Content URL"/>
+    <input type="text" placeholder="Style URL"/>
+    <button onClick="readForm()">Transfer</button>
+  </form>
+
+  <div id="generated">
+    
+  </div>
 </body>
 </html>
