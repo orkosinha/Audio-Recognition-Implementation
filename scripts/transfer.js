@@ -1,5 +1,7 @@
 var contentURL, styleURL;
 
+const vgg19 = await tf.loadModel(`file://${__dirname}/vgg19-tensorflowjs-model/model/model.json`);
+
 function readForm() {
   var form = document.getElementById("urlForm");
   contentURL = form.elements[0].value;
