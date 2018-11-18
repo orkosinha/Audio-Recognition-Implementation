@@ -1,4 +1,7 @@
 var contentURL, styleURL;
+//async function(){
+  const vgg19 =  tf.loadModel(`model/model.json`);
+//}
 
 function readForm() {
   var form = document.getElementById("urlForm");
