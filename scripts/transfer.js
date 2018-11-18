@@ -1,7 +1,12 @@
 var contentURL, styleURL;
 //async function(){
-  const vgg19 =  tf.loadModel(`model/model.json`);
+  //const vgg19 =  tf.loadModel(`model/model.json`);
 //}
+(async function () {
+  const vgg19 = await tf.loadModel(`model/model.json`)
+
+  // ...
+})(console.error);
 
 function readForm() {
   var form = document.getElementById("urlForm");
