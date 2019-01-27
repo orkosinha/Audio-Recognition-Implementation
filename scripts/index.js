@@ -32,7 +32,6 @@ function normalize(x) {
 
 async function train() {
   toggleButtons(false);
-
   if (examples.length == 0) {
     loadModel = false;
     alert("No data was collected. Loading pre-trained model...");

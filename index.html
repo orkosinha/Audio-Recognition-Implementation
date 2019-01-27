@@ -5,18 +5,25 @@
   <meta charset="utf-8"/>
   <script src = "scripts/tf.min.js"></script>
   <script src = "scripts/speech-commands.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="styles/style.css">
 </head>
 
 <body>
   <!-- UI -->
-  <button id="left" onmousedown="collect(0)" onmouseup="collect(null)">Left</button>
-  <button id="right" onmousedown="collect(1)" onmouseup="collect(null)">Right</button>
-  <button id="noise" onmousedown="collect(2)" onmouseup="collect(null)">Noise</button>
+  <div id="information">
+  </div>
 
-  <button id="train" onclick="train()">Train</button>
+  <div id="buttons">
+    <button id="left" onmousedown="collect(0)" onmouseup="collect(null)">Left</button>
+    <button id="right" onmousedown="collect(1)" onmouseup="collect(null)">Right</button>
+    <button id="noise" onmousedown="collect(2)" onmouseup="collect(null)">Noise</button>
+    <button id="train" onclick="train()">Train</button>
+    <button id="listen" onclick="listen()">Listen</button>
+  </div>
 
-  <button id="listen" onclick="listen()">Listen</button>
-  <input type="range" id="output" min="0" max="10" step="0.01">
+  <div id="slider">
+    <input type="range" id="output" min="0" max="10" step="0.01">
+  </div>
   <!-- Output -->
   <div id="console"></div>
   <script src = "scripts/index.js"></script>
