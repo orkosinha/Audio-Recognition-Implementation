@@ -97,7 +97,7 @@ async function moveSlider(labelTensor) {
   else if (label == 2) {
     return;
   }
-  document.getElementById('console').textContent = "Prediction: " + ;
+  document.getElementById('console').textContent = "Prediction: " + word;
   let delta = 0.1;
   const prevValue = +document.getElementById('output').value;
   document.getElementById('output').value =
