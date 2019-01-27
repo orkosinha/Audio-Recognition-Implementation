@@ -29,11 +29,7 @@ function collect(label) {
     document.querySelector('#console').textContent = `${examples.length} examples collected`;
   }, {
     overlapFactor: 0.999,
-<<<<<<< HEAD
     includeSpectogram: true,
-=======
-    includeSpectogram: true
->>>>>>> ab079db0fbf7fe77c7d878bc662fb448986d2a53
     invokeCallbackOnNoiseAndUnknown: true
   });
 }
