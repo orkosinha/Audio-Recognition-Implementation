@@ -56,7 +56,7 @@ function buildModel() {
     activation: 'relu',
     inputShape: INPUT_SHAPE
   }));
-  model.add(tf.lkayers.maxPooling2d({poolSize: [1, 2], strides [2, 2]}));
+  model.add(tf.layers.maxPooling2d({poolSize: [1, 2], strides: [2, 2]}));
   model.add(tf.layers.flatten());
   model.add(tf.layers.dense({units: 3, activation: 'softmax'}));
   const optimizer = tf.train.adam(0.01);
