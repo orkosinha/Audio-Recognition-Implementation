@@ -14,14 +14,6 @@ function predictWord() {
 }
 */
 
-async function app() {
-  recognizer = speechCommands.create('BROWSER_FFT');
-  await recognizer.ensureModelLoaded();
-  //predictWord();
-}
-
-app();
-
 const FRAMES = 3;  //One frame is ~23ms of Audio
 let examples = [];
 
@@ -33,6 +25,7 @@ function collect(label) {
   recognizer.listen(async ({spectogram: {frameSize, data}}) => {
     let vals = normalize(data.subarray(-frameSize * FRAMES));
     examples.push({vals, label});
+    console.log(examples);
     document.querySelector('#console').textContent = `${examples.length} examples collected`;
   }, {
     overlapFactor: 0.999,
@@ -46,3 +39,11 @@ function normalize(x) {
   const std = 10;
   return x.map(x => (x - mean) / std);
 }
+
+async function app() {
+  recognizer = speechCommands.create('BROWSER_FFT');
+  await recognizer.ensureModelLoaded();
+  //predictWord();
+}
+
+app();
