@@ -130,8 +130,11 @@ function listen() {
     scores = Array.from(scores).map((s, i) => ({score: s, word: words[i]}));
     //Find the most probable words
     scores.sort((s1, s2) => s2.score - s1.score);
-    document.querySelector('#console').textContent = scores[0].word;
+    document.querySelector('#console').textContent = "Word prediction: " + scores[0].word;
     }, {probabilityThreshold: 0.75});
+    let delta = 0.1;
+    document.getElementById('output').value =
+    prevValue + (scores[0].word === "left" ? -delta : delta);
   }
 }
 
