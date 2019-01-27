@@ -2,6 +2,8 @@ let recognizer;
 let examples = [];
 let model;
 
+var loadModel = true;
+
 const FRAMES = 3;  //One frame is ~23ms of Audio
 const INPUT_SHAPE = [FRAMES, 232, 1];
 
@@ -30,21 +32,27 @@ function normalize(x) {
 
 async function train() {
   toggleButtons(false);
-  const ys = tf.oneHot(examples.map(e => e.label), 3);
-  const xsShape = [examples.length, ...INPUT_SHAPE];
-  const xs = tf.tensor(flatten(examples.map(e => e.vals)), xsShape);
 
-  await model.fit(xs, ys, {
-    batchSize: 16,
-    epochs: 10,
-    callbacks: {
-      onEpochEnd: (epoch, logs) => {
-        document.querySelector('#console').textContent =
-        'Accuracy: ${(logs.acc * 100).toFixed(1)}% Epoch: ${epoch + 1}';
+  if (examples.length == 0) {
+    loadModel = false;
+    alert("No data was collected. Loading pre-trained model");
+  } else {
+    const ys = tf.oneHot(examples.map(e => e.label), 3);
+    const xsShape = [examples.length, ...INPUT_SHAPE];
+    const xs = tf.tensor(flatten(examples.map(e => e.vals)), xsShape);
+
+    await model.fit(xs, ys, {
+      batchSize: 16,
+      epochs: 10,
+      callbacks: {
+        onEpochEnd: (epoch, logs) => {
+          document.querySelector('#console').textContent =
+            `Accuracy: ${(logs.acc * 100).toFixed(1)}% Epoch: ${epoch + 1}`;
+        }
       }
-    }
-  });
-  tf.dispose([xs, ys]);
+    });
+    tf.dispose([xs, ys]);
+  }
   toggleButtons(true);
 }
 
@@ -101,18 +109,30 @@ function listen() {
   document.getElementById('listen').textContent = 'Stop';
   document.getElementById('listen').disabled = false;
 
-  recognizer.listen(async ({spectrogram: {frameSize, data}}) => {
-    const vals = normalize(data.subarray(-frameSize * FRAMES));
-    const input = tf.tensor(vals, [1, ...INPUT_SHAPE]);
-    const probs = model.predict(input);
-    const predLabel = probs.argMax(1);
-    await moveSlider(predLabel);
-    tf.dispose([input, probs, predLabel]);
-  }, {
-    overlapFactor: 0.999,
-    includeSpectrogram: true,
-    invokeCallbackOnNoiseAndUnknown: true
-  });
+  if (loadModel) {
+    recognizer.listen(async ({spectrogram: {frameSize, data}}) => {
+      const vals = normalize(data.subarray(-frameSize * FRAMES));
+      const input = tf.tensor(vals, [1, ...INPUT_SHAPE]);
+      const probs = model.predict(input);
+      const predLabel = probs.argMax(1);
+      await moveSlider(predLabel);
+      tf.dispose([input, probs, predLabel]);
+    }, {
+      overlapFactor: 0.999,
+      includeSpectrogram: true,
+      invokeCallbackOnNoiseAndUnknown: true
+    });
+  } else {
+    //Array of words that the recognizer is trained to recognize
+    const words = recognizer.wordLabels();
+    recognizer.listen(({scores}) => {
+    //Turn scores into a list of (score, word) pairs
+    scores = Array.from(scores).map((s, i) => ({score: s, word: words[i]}));
+    //Find the most probable words
+    scores.sort((s1, s2) => s2.score - s1.score);
+    document.querySelector('#console').textContent = scores[0].word;
+    }, {probabilityThreshold: 0.75});
+  }
 }
 
 /*
