@@ -1,5 +1,6 @@
 let recognizer;
 
+/*
 function predictWord() {
   //Array of words that the recognizer is trained to recognize
   const words = recognizer.wordLabels();
@@ -11,11 +12,37 @@ function predictWord() {
     document.querySelector('#console').textContent = scores[0].word;
   }, {probabilityThreshold: 0.75});
 }
+*/
 
 async function app() {
   recognizer = speechCommands.create('BROWSER_FFT');
   await recognizer.ensureModelLoaded();
-  predictWord();
+  //predictWord();
 }
 
 app();
+
+const FRAMES = 3;  //One frame is ~23ms of Audio
+let examples = [];
+
+//Called by buttons from index.html
+function collect(label) {
+  if (label == null) {
+    return recognizer.stopListening();
+  }
+  recognizer.listen(async ({spectogram: {frameSize, data}}) => {
+    let vals = normalize(data.subarray(-frameSize * FRAMES));
+    examples.push({vals, label});
+    document.querySelector('#console').textContent = `${examples.length} examples collected`;
+  }, {
+    overlapFactor: 0.999,
+    includeSpectogram: true;
+    invokeCallbackOnNoiseAndUnknown: true
+  });
+}
+
+function normalize(x) {
+  const mean = -100;
+  const std = 10;
+  return x.map(x => (x - mean) / std);
+}
