@@ -29,7 +29,7 @@ function collect(label) {
     document.querySelector('#console').textContent = `${examples.length} examples collected`;
   }, {
     overlapFactor: 0.999,
-    includeSpectogram: true;
+    includeSpectogram: true
     invokeCallbackOnNoiseAndUnknown: true
   });
 }
