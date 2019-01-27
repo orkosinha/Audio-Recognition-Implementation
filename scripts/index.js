@@ -35,7 +35,7 @@ async function train() {
 
   if (examples.length == 0) {
     loadModel = false;
-    alert("No data was collected. Loading pre-trained model");
+    alert("No data was collected. Loading pre-trained model...");
   } else {
     const ys = tf.oneHot(examples.map(e => e.label), 3);
     const xsShape = [examples.length, ...INPUT_SHAPE];
@@ -88,10 +88,16 @@ function flatten(tensors) {
 
 async function moveSlider(labelTensor) {
   const label = (await labelTensor.data())[0];
-  document.getElementById('console').textContent = label;
-  if (label == 2) {
+  var word;
+  if (label = 0) {
+    word = "left";
+  } else if (label = 1) {
+    word = "right";
+  }
+  else if (label == 2) {
     return;
   }
+  document.getElementById('console').textContent = "Prediction: " + ;
   let delta = 0.1;
   const prevValue = +document.getElementById('output').value;
   document.getElementById('output').value =
@@ -130,9 +136,10 @@ function listen() {
     scores = Array.from(scores).map((s, i) => ({score: s, word: words[i]}));
     //Find the most probable words
     scores.sort((s1, s2) => s2.score - s1.score);
-    document.querySelector('#console').textContent = "Word prediction: " + scores[0].word;
+    document.querySelector('#console').textContent = "Prediction: " + scores[0].word;
     }, {probabilityThreshold: 0.75});
     let delta = 0.1;
+    const prevValue = +document.getElementById('output').value;
     document.getElementById('output').value =
     prevValue + (scores[0].word === "left" ? -delta : delta);
   }
