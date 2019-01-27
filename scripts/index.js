@@ -1,4 +1,30 @@
 let recognizer;
+let examples = [];
+
+const FRAMES = 3;  //One frame is ~23ms of Audio
+
+//Called by buttons from index.html
+function collect(label) {
+  if (label == null) {
+    return recognizer.stopListening();
+  }
+  recognizer.listen(async ({spectrogram: {frameSize, data}}) => {
+    let vals = normalize(data.subarray(-frameSize * FRAMES));
+    examples.push({vals, label});
+    console.log(examples);
+    document.querySelector('#console').textContent = `${examples.length} examples collected`;
+  }, {
+    overlapFactor: 0.999,
+    includeSpectrogram: true,
+    invokeCallbackOnNoiseAndUnknown: true
+  });
+}
+
+function normalize(x) {
+  const mean = -100;
+  const std = 10;
+  return x.map(x => (x - mean) / std);
+}
 
 /*
 function predictWord() {
@@ -13,32 +39,6 @@ function predictWord() {
   }, {probabilityThreshold: 0.75});
 }
 */
-
-const FRAMES = 3;  //One frame is ~23ms of Audio
-let examples = [];
-
-//Called by buttons from index.html
-function collect(label) {
-  if (label == null) {
-    return recognizer.stopListening();
-  }
-  recognizer.listen(async ({spectogram: {frameSize, data}}) => {
-    let vals = normalize(data.subarray(-frameSize * FRAMES));
-    examples.push({vals, label});
-    console.log(examples);
-    document.querySelector('#console').textContent = `${examples.length} examples collected`;
-  }, {
-    overlapFactor: 0.999,
-    includeSpectogram: true,
-    invokeCallbackOnNoiseAndUnknown: true
-  });
-}
-
-function normalize(x) {
-  const mean = -100;
-  const std = 10;
-  return x.map(x => (x - mean) / std);
-}
 
 async function app() {
   recognizer = speechCommands.create('BROWSER_FFT');
