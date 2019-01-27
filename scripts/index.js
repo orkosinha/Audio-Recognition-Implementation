@@ -137,11 +137,11 @@ function listen() {
     //Find the most probable words
     scores.sort((s1, s2) => s2.score - s1.score);
     document.querySelector('#console').textContent = "Prediction: " + scores[0].word;
-    }, {probabilityThreshold: 0.75});
     let delta = 0.1;
     const prevValue = +document.getElementById('output').value;
     document.getElementById('output').value =
     prevValue + (scores[0].word === "left" ? -delta : delta);
+    }, {probabilityThreshold: 0.75});
   }
 }
 
