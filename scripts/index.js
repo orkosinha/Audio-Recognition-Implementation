@@ -139,12 +139,10 @@ function listen() {
     let delta = 0.1;
     const prevValue = +document.getElementById('output').value;
     if (scores[0].word === "left") {
-       document.getElementById('output').value +  prevValue - delta; 
+       document.getElementById('output').value =  prevValue - delta; 
     } else if (scores[0].word === "right") {
-       document.getElementById('output').value + prevValue + delta;
+       document.getElementById('output').value = prevValue + delta;
     }
-    document.getElementById('output').value =
-    prevValue + (scores[0].word === "left" ? -delta : delta);
     }, {probabilityThreshold: 0.75});
   }
 }
