@@ -1,5 +1,5 @@
 # Audio Slider
-This project is an implementation of an audio recognition network using TensorFlow.js. You can either use a [pre-trained model](https://github.com/tensorflow/tfjs-models/tree/master/speech-commands) or train your own model to move a slider left and right using your microphone. A live demo is available [here](https://orkosin.github.io/Audio-Recognition-Implementation/). 
+This project is an implementation of an audio recognition network using TensorFlow.js. You can either use a [pre-trained model](https://github.com/tensorflow/tfjs-models/tree/master/speech-commands) or train your own model to move a slider left and right using your microphone. A live demo is available [here](https://orkosinha.github.io/Audio-Recognition-Implementation/). 
 
 ## Instructions
 #### Pre-trained
