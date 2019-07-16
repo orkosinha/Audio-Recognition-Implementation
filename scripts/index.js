@@ -90,10 +90,9 @@ async function moveSlider(labelTensor) {
   var word = "";
   if (label == 0) {
     word = "left";
-  } else if (label = 1) {
+  } else if (label == 1) {
     word = "right";
-  }
-  else if (label == 2) {
+  } else if (label == 2) {
     return;
   }
   document.getElementById('console').textContent = "Prediction: " + word;
