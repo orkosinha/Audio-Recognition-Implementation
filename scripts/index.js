@@ -87,7 +87,7 @@ function flatten(tensors) {
 
 async function moveSlider(labelTensor) {
   const label = (await labelTensor.data())[0];
-  var word;
+  var word = "";
   if (label = 0) {
     word = "left";
   } else if (label = 1) {
